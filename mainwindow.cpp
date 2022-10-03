@@ -161,10 +161,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
  }
 void MainWindow::on_fullScreen_clicked()
 {
-    vw->showMaximized();
-    if( vw->isFullScreen() != true){
-        vw->setFullScreen(true);
-    } else(vw->setFullScreen(false));
+   vw->setFullScreen(!vw->isFullScreen());
 
     }
 
