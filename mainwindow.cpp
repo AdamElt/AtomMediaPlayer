@@ -109,8 +109,14 @@ void MainWindow::on_playButton_clicked()
 
 void MainWindow::on_muteButton_clicked()
 {
-
-}
+    if (ui->volumeSlider->value() == 0) {
+            audioOutput->setVolume(20);
+            ui->volumeSlider->setSliderPosition(20);
+        } else {
+            audioOutput->setVolume(0);
+            ui->volumeSlider->setSliderPosition(0);
+        }
+    }
 
 void MainWindow::on_volumeSlider_valueChanged(int value)
 {
