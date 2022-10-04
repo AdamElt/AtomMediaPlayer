@@ -15,23 +15,27 @@ MainWindow::MainWindow(QWidget *parent)
     vw = new QVideoWidget(this);
     layout = new QGridLayout(this);
 
-    on_volumeSlider_valueChanged(50);
-
     player->setAudioOutput(audioOutput);
-
 
     ui->groupBox->setLayout(layout);
 
     layout->addWidget(vw);
 
     player->setVideoOutput(vw);
+    
+    connect(player, &QMediaPlayer::durationChanged, ui->durationSlider, &QSlider::setMaximum);
+
+    connect(player, &QMediaPlayer::positionChanged, ui->durationSlider, &QSlider::setValue);
+
+    connect(ui->durationSlider, &QSlider::sliderMoved, player, &QMediaPlayer::setPosition);
+
+    updateDurationInfo(player->duration());
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 void MainWindow::on_actionOpen_triggered()
 {
@@ -40,13 +44,18 @@ void MainWindow::on_actionOpen_triggered()
     on_actionstop_triggered();
 
     player->setSource(QUrl::fromLocalFile(filename));
+    
+    setWindowTitle(filename);
+    
+    ui->statusbar->showMessage("Playing " + filename);
+    
+    ui->volumeSlider->setSliderPosition(100);
 
     on_actionPlay_triggered();
 
     on_volumeSlider_valueChanged(50);
 
 }
-
 
 void MainWindow::on_actionPause_triggered()
 {
@@ -91,9 +100,6 @@ void MainWindow::on_playButton_clicked()
       }
 }
 
-
-
-
 void MainWindow::on_muteButton_clicked()
 {
     if (ui->volumeSlider->value() == 0) {
@@ -114,9 +120,6 @@ void MainWindow::on_volumeSlider_valueChanged(int value)
                                                 QAudio::LinearVolumeScale);
     audioOutput->setVolume(linearVolume);
 
-
-
-
     if(value == 0){
 
         ui->muteButton->setIcon(QIcon(":/img/Images/mute.png"));
@@ -133,7 +136,6 @@ void MainWindow::on_volumeSlider_valueChanged(int value)
         ui->muteButton->setIcon(QIcon(":/img/Images/low-volume.png"));
     }
 
-
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -146,7 +148,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-
  void MainWindow::mouseDoubleClickEvent(QMouseEvent *event)
  {
      vw->showMaximized();
@@ -154,8 +155,18 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
  }
 void MainWindow::on_fullScreen_clicked()
 {
-   vw->setFullScreen(!vw->isFullScreen());
+   vw->setFullScreen(!vw->isFullScreen()); 
+}
 
-    }
+void MainWindow::updateDurationInfo(qint64 duration)
+ {
 
+     int seconds = (duration/1000) % 60;
+     int minutes = (duration/60000) % 60;
+     int hours = (duration/3600000) % 24;
 
+     QTime time(hours, minutes,seconds);
+
+     ui->label->setText(time.toString());
+
+ }
