@@ -14,6 +14,7 @@
 #include <QAudioOutput>
 #include <QComboBox>
 #include <QKeyEvent>
+#include <QLabel>
 
 
 QT_BEGIN_NAMESPACE
@@ -49,9 +50,9 @@ private slots:
 
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
-    void on_fullScreen_clicked();
-
     void keyPressEvent(QKeyEvent *event) override;
+    
+    void updateDurationInfo(qint64 duration);
 
 private:
     QMediaPlayer::PlaybackState playerState = QMediaPlayer::StoppedState;
@@ -64,5 +65,9 @@ private:
     QGridLayout* layout;
     QMainWindow* newWindow;
     QGroupBox* box;
+    QHBoxLayout* hLayout;
+    QHBoxLayout* controlLayout;
+    QLabel* label;
+    qint64 duration;
 };
 #endif // MAINWINDOW_H
