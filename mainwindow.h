@@ -39,10 +39,6 @@ private slots:
 
     void on_actionPlay_triggered();
 
-    void on_actionmaxVolume_triggered();
-
-    void on_actionmuted_triggered();
-
     void on_actionstop_triggered();
 
     void on_playButton_clicked();
