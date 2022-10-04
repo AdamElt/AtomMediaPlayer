@@ -63,19 +63,6 @@ void MainWindow::on_actionPlay_triggered()
     ui->statusbar->showMessage("Playing Media");
 }
 
-
-void MainWindow::on_actionmaxVolume_triggered()
-{
-
-}
-
-
-void MainWindow::on_actionmuted_triggered()
-{
-
-}
-
-
 void MainWindow::on_actionstop_triggered()
 {
     player->stop();
