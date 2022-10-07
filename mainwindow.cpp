@@ -28,7 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(player, &QMediaPlayer::positionChanged, ui->durationSlider, &QSlider::setValue);
 
     connect(ui->durationSlider, &QSlider::sliderMoved, player, &QMediaPlayer::setPosition);
-        
+    
+    this->setWindowTitle("Atom Media");
 }
 
 MainWindow::~MainWindow()
