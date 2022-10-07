@@ -28,8 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(player, &QMediaPlayer::positionChanged, ui->durationSlider, &QSlider::setValue);
 
     connect(ui->durationSlider, &QSlider::sliderMoved, player, &QMediaPlayer::setPosition);
-
-    updateDurationInfo(player->duration());
+        
 }
 
 MainWindow::~MainWindow()
@@ -54,6 +53,12 @@ void MainWindow::on_actionOpen_triggered()
     on_actionPlay_triggered();
 
     on_volumeSlider_valueChanged(50);
+    
+    connect(player, &QMediaPlayer::durationChanged, this, [&]() {
+     
+        updateDurationInfo(player->duration());
+           
+    });
 
 }
 
